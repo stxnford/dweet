@@ -2,8 +2,6 @@ import React, { useRef, useState } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
-import { Toaster, toaster } from '@/components/ui/toaster';
-
 import {
   Button,
   FormControl,
@@ -66,7 +64,7 @@ const AddTaskComponent = ({
   const onCreateTask = async () => {
     setIsLoading(true);
     if (formRef.current) {
-      let tsk = formRef.current;
+      const tsk = formRef.current;
       const errors = await tsk.validateForm();
       await tsk.setTouched(errors);
 

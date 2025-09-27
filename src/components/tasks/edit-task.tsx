@@ -66,7 +66,7 @@ const EditTaskComponent = ({
   const onEditTask = async () => {
     setIsLoading(true);
     if (formRef.current) {
-      let tsk = formRef.current;
+      const tsk = formRef.current;
       const errors = await tsk.validateForm();
       await tsk.setTouched(errors);
 

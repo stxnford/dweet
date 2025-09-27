@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import {
@@ -33,7 +34,7 @@ const Tasks: React.FC = () => {
   const [tasksData, setTasksData] = useState<Task[]>([]);
   const [searched, setSearched] = useState<Task[]>([]);
   const [searching, setSearching] = useState('');
-  const [tagFilterValue, setTagFilterValue] = useState('all');
+  const [tagFilterValue, setTagFilterValue] = useState<string>('all');
   const [tagsFilters] = useState(tags);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);

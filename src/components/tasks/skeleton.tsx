@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Flex, Grid, Skeleton, SkeletonCircle } from '@chakra-ui/react';
+import { Flex, Grid, Skeleton, SkeletonCircle } from '@chakra-ui/react';
 
 const SkeletonComponent = () => {
   return (

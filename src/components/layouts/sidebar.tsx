@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 
 import {
@@ -10,9 +11,10 @@ import {
   useColorMode,
   useRadio,
   useRadioGroup,
+  UseRadioProps,
 } from '@chakra-ui/react';
 
-import { MdFirstPage, MdGridView, MdLastPage } from 'react-icons/md';
+import { MdFirstPage, MdLastPage } from 'react-icons/md';
 
 interface Tags {
   id: number;
@@ -84,18 +86,18 @@ function TagFilters({ tags, setTagValue }: SidebarComponentProps) {
   const allTags = [allTag, ...tags];
 
   useEffect(() => {
-    setTagValue(value);
+    setTagValue(`${value}`);
   }, [value]);
 
   const group = getRootProps();
   return (
     <Box {...group}>
       {allTags?.map((tag) => {
-        const radio = getRadioProps({ value: tag.slug });
+        const radio = getRadioProps({ value: `${tag.slug}` });
 
         return (
           <TagFilter
-            value={value}
+            value={`${value}`}
             setTagValue={setTagValue}
             key={tag.id}
             {...radio}
@@ -108,7 +110,7 @@ function TagFilters({ tags, setTagValue }: SidebarComponentProps) {
   );
 }
 
-function TagFilter(props) {
+function TagFilter(props: UseRadioProps | undefined) {
   const { getInputProps, getRadioProps } = useRadio(props);
   const input = getInputProps();
   const select = getRadioProps();
