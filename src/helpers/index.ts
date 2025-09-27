@@ -1,18 +1,18 @@
-const delay = (milliseconds) =>
+export const delay = (milliseconds: number) =>
   new Promise((resolve) => {
     setTimeout(resolve, milliseconds);
   });
 
-const trimString = (string, length) => {
+export const trimString = (string: string, length: number) => {
   if (string && string.length > length) {
-    let trimmed = string.substr(0, length);
+    const trimmed = string.substr(0, length);
 
     return `${trimmed} ...`;
   }
   return string;
 };
 
-const paginate = (src, page, perPage) => {
+export const paginate = (src: Task[], page: number, perPage: number) => {
   const lastIndex = page * perPage;
   const firstIndex = lastIndex - perPage;
   const paginated = src.slice(firstIndex, lastIndex);
