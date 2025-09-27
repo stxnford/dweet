@@ -29,6 +29,6 @@ yarn dev or npm run dev
 
 ## 🧰 Tech Stack
 
-- Javascript
+- Typescript
 - React JS
 - Chakra UI

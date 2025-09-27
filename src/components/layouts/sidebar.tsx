@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 
@@ -11,7 +12,6 @@ import {
   useColorMode,
   useRadio,
   useRadioGroup,
-  UseRadioProps,
 } from '@chakra-ui/react';
 
 import { MdFirstPage, MdLastPage } from 'react-icons/md';
@@ -110,7 +110,7 @@ function TagFilters({ tags, setTagValue }: SidebarComponentProps) {
   );
 }
 
-function TagFilter(props: UseRadioProps | undefined) {
+function TagFilter(props: any) {
   const { getInputProps, getRadioProps } = useRadio(props);
   const input = getInputProps();
   const select = getRadioProps();
