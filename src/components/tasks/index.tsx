@@ -24,6 +24,7 @@ import AddTask from '@/components/tasks/add-task';
 import Task from '@/components/tasks/task';
 import Skeleton from '@/components/tasks/skeleton';
 import Calendar from '@/components/calendar';
+import CalendarInModal from '@/components/calendar/modal';
 
 import { delay, paginate } from '@/helpers';
 
@@ -160,12 +161,18 @@ const Tasks: React.FC = () => {
   });
 
   return (
-    <Flex px={8} bg={bg} minH={'100vh'} direction={'column'} w={'full'}>
+    <Flex
+      px={{ base: 2, md: 8 }}
+      bg={bg}
+      minH={'100vh'}
+      direction={'column'}
+      w={'full'}
+    >
       <Flex mt={8} gap={4}>
         <Sidebar tags={tagsFilters} setTagValue={onTagsFilter} />
         <Flex flexGrow={1} direction={'column'} w={'full'}>
           <Flex w={'full'} mb={8} align={'center'} justify={'space-between'}>
-            <Flex align={'center'} flex={'0.25'} gap={2}>
+            <Flex align={'center'} flex={{ base: 0.65, md: '0.3' }} gap={2}>
               <Input
                 variant={'subtle'}
                 placeholder={'Search tasks'}
@@ -174,7 +181,7 @@ const Tasks: React.FC = () => {
                 value={searching}
               />
             </Flex>
-            <Flex align={'center'} gap={4}>
+            <Flex align={'center'} gap={{ base: 2, md: 4 }}>
               <IconButton
                 aria-label={'color-mode-switch'}
                 onClick={toggleColorMode}
@@ -186,8 +193,10 @@ const Tasks: React.FC = () => {
                   <MdOutlineLightMode />
                 )}
               </IconButton>
-              <Flex align={'center'} gap={2}>
-                <Text fontSize={16}>stxnford</Text>
+              <Flex display={{ base: 'flex', md: 'none' }}>
+                <CalendarInModal tasks={tasksData} />
+              </Flex>
+              <Flex align={'center'}>
                 <Avatar
                   width={10}
                   height={10}
@@ -291,7 +300,9 @@ const Tasks: React.FC = () => {
               </Box>
             </GridItem>
             <GridItem>
-              <Calendar tasks={tasksData} />
+              <Box display={{ base: 'none', md: 'block' }}>
+                <Calendar tasks={tasksData} />
+              </Box>
             </GridItem>
           </Grid>
         </Flex>

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 
@@ -9,15 +8,15 @@ import {
   IconButton,
   Image,
   Text,
+  useBreakpointValue,
   useColorMode,
-  useRadio,
-  useRadioGroup,
 } from '@chakra-ui/react';
 
 import { MdFirstPage, MdLastPage } from 'react-icons/md';
 
 interface Tags {
   id: number;
+  theme: string;
   title: string;
   slug: string;
 }
@@ -31,13 +30,24 @@ const SidebarComponent = ({
   tags,
   setTagValue,
 }: SidebarComponentProps): JSX.Element => {
+  const [tagFilter, setTagFilter] = useState('all');
   const [collapsedSidebar, setCollapsedSidebar] = useState(false);
+
+  const isMobile = useBreakpointValue({
+    base: true,
+    md: false,
+  });
 
   const { colorMode } = useColorMode();
 
   const toggleSidebar = () => {
     setCollapsedSidebar(!collapsedSidebar);
   };
+
+  useEffect(() => {
+    setTagValue(tagFilter);
+  }, [tagFilter]);
+
   return (
     <Flex
       w={collapsedSidebar ? '4%' : '15%'}
@@ -46,7 +56,8 @@ const SidebarComponent = ({
     >
       <Flex mb={8} align={'center'} justify={'space-between'}>
         <Image
-          w={10}
+          minW={10}
+          maxW={10}
           aspectRatio={1}
           src={
             colorMode === 'light' ? '/logo/icon.png' : '/logo/icon-white.png'
@@ -64,92 +75,54 @@ const SidebarComponent = ({
       </Flex>
       <Divider my={4} />
       <Box pb={4}>
-        <Text mb={2} fontSize={16} fontWeight={'semi-bold'}>
+        <Text
+          display={collapsedSidebar || isMobile ? 'none' : 'block'}
+          mb={2}
+          fontSize={16}
+          fontWeight={'semi-bold'}
+        >
           Your Tags
         </Text>
-        <TagFilters tags={tags} setTagValue={setTagValue} />
+        <Box>
+          {tags &&
+            tags.map((tag) => {
+              return (
+                <Flex
+                  key={tag.id}
+                  p={2}
+                  align={'center'}
+                  justify={collapsedSidebar || isMobile ? 'center' : ''}
+                  color={tagFilter === tag.slug ? '#F68A1E' : ''}
+                  my={0.5}
+                  bg={tagFilter === tag.slug ? '#FFF' : 'transparent'}
+                  cursor={'pointer'}
+                  fontWeight={tagFilter === tag.slug ? 'bold' : 'semi-bold'}
+                  rounded={'lg'}
+                  _hover={{
+                    color: '#F68A1E',
+                    fontWeight: 'bold',
+                    bg: '#FFF',
+                    transition: 'all .4s ease',
+                  }}
+                  onClick={() => setTagFilter(tag.slug)}
+                >
+                  {collapsedSidebar || isMobile ? (
+                    <Flex fontSize={14} align={'center'}>
+                      <Text>{tag.theme}</Text>
+                    </Flex>
+                  ) : (
+                    <Flex fontSize={14} align={'center'} gap={2}>
+                      <Text>{tag.theme}</Text>
+                      <Text>{tag.title}</Text>
+                    </Flex>
+                  )}
+                </Flex>
+              );
+            })}
+        </Box>
       </Box>
     </Flex>
   );
 };
 
 export default SidebarComponent;
-
-function TagFilters({ tags, setTagValue }: SidebarComponentProps) {
-  const { getRootProps, getRadioProps, value } = useRadioGroup({
-    name: 'tagFilters',
-    defaultValue: 'all',
-  });
-
-  const allTag = { id: 0, slug: 'all', title: '📌 All' };
-
-  const allTags = [allTag, ...tags];
-
-  useEffect(() => {
-    setTagValue(`${value}`);
-  }, [value]);
-
-  const group = getRootProps();
-  return (
-    <Box {...group}>
-      {allTags?.map((tag) => {
-        const radio = getRadioProps({ value: `${tag.slug}` });
-
-        return (
-          <TagFilter
-            value={`${value}`}
-            setTagValue={setTagValue}
-            key={tag.id}
-            {...radio}
-          >
-            {tag}
-          </TagFilter>
-        );
-      })}
-    </Box>
-  );
-}
-
-function TagFilter(props: any) {
-  const { getInputProps, getRadioProps } = useRadio(props);
-  const input = getInputProps();
-  const select = getRadioProps();
-
-  const { children, setTagValue } = props;
-  const { slug, title } = children;
-
-  const handleTagSelect = () => {
-    setTagValue(slug);
-  };
-
-  return (
-    <Box as={'label'}>
-      <input {...input} />
-      <Flex
-        {...select}
-        p={2}
-        my={0.5}
-        bg={'transparent'}
-        cursor={'pointer'}
-        fontSize={14}
-        fontWeight={'semi-bold'}
-        rounded={'lg'}
-        _checked={{
-          color: '#F68A1E',
-          fontWeight: 'bold',
-          bg: '#FFF',
-          transition: 'all .4s ease',
-        }}
-        _hover={{
-          color: '#F68A1E',
-          fontWeight: 'bold',
-          bg: '#FFF',
-          transition: 'all .4s ease',
-        }}
-        onClick={handleTagSelect}
-      >
-        {title}
-      </Flex>
-    </Box>
-  );
-}

@@ -1,17 +1,21 @@
 export const tags = [
+  { id: 1, theme: '📌', title: 'All', slug: 'all' },
   {
-    id: 1,
-    title: '💼 Work',
+    id: 2,
+    theme: '💼',
+    title: 'Work',
     slug: 'work',
   },
   {
-    id: 2,
-    title: '🎓 Learning',
+    id: 3,
+    theme: '🎓',
+    title: 'Learning',
     slug: 'learning',
   },
   {
-    id: 3,
-    title: '🤖 Hobbies',
+    id: 4,
+    theme: '🤖',
+    title: 'Hobbies',
     slug: 'hobbies',
   },
 ];
