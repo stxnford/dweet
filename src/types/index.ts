@@ -16,6 +16,10 @@ interface CalendarComponentProps {
   tasks: Task[];
 }
 
+interface CalendarInModalProps {
+  tasks: Task[];
+}
+
 interface TaskComponentProps {
   task: Task;
   whenCompleted: (id: number, isCompleted: boolean) => void;
