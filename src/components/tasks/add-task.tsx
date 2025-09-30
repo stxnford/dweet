@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikProps, FormikTouched } from 'formik';
 import * as Yup from 'yup';
 
 import {
@@ -29,17 +29,23 @@ import { delay } from '@/helpers';
 import { priorities } from '@/data/priorities';
 import { tags } from '@/data/tags';
 
+interface AddTaskFormValues {
+  title: string;
+  description: string;
+  deadline: string;
+}
+
 const AddTaskComponent = ({
   createTask,
 }: AddTaskComponentProps): JSX.Element => {
-  const [priority, setPriority] = useState<string>();
-  const [selectedTag, setSelectedTag] = useState<string>();
+  const [priority, setPriority] = useState<string>('');
+  const [selectedTag, setSelectedTag] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const toast = useToast();
 
-  const formRef = useRef<HTMLFormElement>();
+  const formRef = useRef<FormikProps<AddTaskFormValues>>(null);
 
   const bg = useColorModeValue('#EEEEEE', '#121212');
 
@@ -66,7 +72,8 @@ const AddTaskComponent = ({
     if (formRef.current) {
       const tsk = formRef.current;
       const errors = await tsk.validateForm();
-      await tsk.setTouched(errors);
+      const touchedAsErrors = errors as FormikTouched<AddTaskFormValues>;
+      await tsk.setTouched(touchedAsErrors);
 
       if (Object.values(errors).length) {
         tsk.setFieldError(
@@ -89,6 +96,7 @@ const AddTaskComponent = ({
         isCompleted: false,
         priority: priority,
         tag: selectedTag,
+        id: 0,
       });
       await delay(2000);
       toast({
@@ -127,6 +135,9 @@ const AddTaskComponent = ({
                 title: '',
                 description: '',
                 deadline: '',
+              }}
+              onSubmit={(values, actions) => {
+                console.log({ values, actions });
               }}
               validationSchema={taskSchema}
               innerRef={formRef}

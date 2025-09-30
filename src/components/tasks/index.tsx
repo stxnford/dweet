@@ -250,6 +250,8 @@ const Tasks: React.FC = () => {
                     <Skeleton />
                     <Skeleton />
                     <Skeleton />
+                    <Skeleton />
+                    <Skeleton />
                   </Box>
                 ) : (
                   <Flex direction={'column'}>

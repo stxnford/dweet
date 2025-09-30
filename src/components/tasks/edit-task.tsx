@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikProps, FormikTouched } from 'formik';
 import * as Yup from 'yup';
 
 import {
@@ -30,6 +30,12 @@ import { delay } from '@/helpers';
 import { priorities } from '@/data/priorities';
 import { tags } from '@/data/tags';
 
+interface EditTaskFormValues {
+  title: string;
+  description: string;
+  deadline: string;
+}
+
 const EditTaskComponent = ({
   task,
   editTask,
@@ -41,7 +47,7 @@ const EditTaskComponent = ({
 
   const toast = useToast();
 
-  const formRef = useRef<HTMLFormElement>();
+  const formRef = useRef<FormikProps<EditTaskFormValues>>(null);
 
   const bg = useColorModeValue('#EEEEEE', '#121212');
 
@@ -68,7 +74,8 @@ const EditTaskComponent = ({
     if (formRef.current) {
       const tsk = formRef.current;
       const errors = await tsk.validateForm();
-      await tsk.setTouched(errors);
+      const touchedAsErrors = errors as FormikTouched<EditTaskFormValues>;
+      await tsk.setTouched(touchedAsErrors);
 
       if (Object.values(errors).length) {
         tsk.setFieldError(
@@ -129,6 +136,9 @@ const EditTaskComponent = ({
                 title: task.title,
                 description: task.description,
                 deadline: task.deadline,
+              }}
+              onSubmit={(values, actions) => {
+                console.log({ values, actions });
               }}
               validationSchema={taskSchema}
               innerRef={formRef}
